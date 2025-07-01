@@ -9,11 +9,29 @@ return {
     { 'hrsh7th/nvim-cmp' },
   },
   config = function()
-    vim.lsp.config("tailwindcss", {})
-    vim.lsp.config("ruby_lsp", {})
-    vim.lsp.config("gopls", {})
-    vim.lsp.config("elixirls", {})
+    local cmp = require'cmp'
+    cmp.setup({
+      snippet = {
+        expand = function(args)
+          vim.snippet.expand(args.body)
+        end,
+      }
+    })
+    local capabilities = require('cmp_nvim_lsp').default_capabilities()
+    vim.lsp.config("tailwindcss", {
+      capabilities = capabilities
+    })
+    vim.lsp.config("ruby_lsp", {
+      capabilities = capabilities,
+    })
+    vim.lsp.config("gopls", {
+      capabilities = capabilities,
+    })
+    vim.lsp.config("elixirls", {
+      capabilities = capabilities,
+    })
     vim.lsp.config("lua_ls", {
+      capabilities = capabilities,
       settings = {
         Lua = {
           runtime = {
@@ -38,6 +56,7 @@ return {
     })
 
     vim.lsp.config("zls", {
+      capabilities = capabilities,
       cmd = { "zls" },
       on_attach = function(client, bufnr)
         -- Enable format on save
